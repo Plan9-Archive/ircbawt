@@ -1,0 +1,6 @@
+Import('*')
+
+env.Append(CCFLAGS = Split("-O -Wall -pipe -pthread"))
+env.Append(LIBS = Split('boost_program_options boost_system'))
+
+env.Program('#/' + target, Glob('*.cpp'))
