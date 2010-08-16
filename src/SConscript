@@ -1,6 +1,15 @@
 Import('*')
 
-env.Append(CCFLAGS = Split("-O -Wall -pipe -pthread"))
+if env.has_key('CXX_COMMAND'):
+	env.Replace(CXX = '$CXX_COMMAND')
+
+if env.has_key('BOOST_PATH'):
+	env.Append(CPPPATH='$BOOST_PATH/include')
+	env.Append(LIBPATH='$BOOST_PATH/lib')
+
+
+env.Append(LINKFLAGS = Split("-pthread"))
+env.Append(CCFLAGS = Split("-O -Wall"))
 env.Append(LIBS = Split('boost_program_options boost_system'))
 
 env.Program('#/' + target, Glob('*.cpp'))
