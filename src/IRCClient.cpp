@@ -1,8 +1,8 @@
  #include <iostream>
 #include <boost/foreach.hpp>
 
-#include "irc_client.hpp"
-#include "irc_parser.hpp"
+#include "IRCClient.hpp"
+#include "IRCParser.hpp"
 
 void irc_client::privmsg(const std::string &target, const std::string &msg)
 {

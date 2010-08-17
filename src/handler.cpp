@@ -4,7 +4,7 @@
 #include <cctype>
 
 #include "handler.hpp"
-#include "irc_client.hpp"
+#include "IRCClient.hpp"
 
 #ifdef DEBUG
 

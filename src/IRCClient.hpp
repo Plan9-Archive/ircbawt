@@ -1,5 +1,5 @@
-#ifndef IRC_CLIENT_HPP
-#define IRC_CLIENT_HPP
+#ifndef IRCCLIENT_HPP
+#define IRCCLIENT_HPP
 
 #include <iostream>
 #include <istream>
@@ -13,7 +13,7 @@
 #include <boost/regex.hpp>
 #include <boost/function.hpp>
 
-#include "irc_parser.hpp"
+#include "IRCParser.hpp"
 #include "handler.hpp"
 
 class irc_client

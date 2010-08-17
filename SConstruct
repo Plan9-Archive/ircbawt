@@ -1,23 +1,35 @@
-AddOption('--with-boost',
-          dest='with-boost',
-          type='string',
-          nargs=1,
-          action='store',
-          metavar='DIR',
-          help='path to boost installation')
+#AddOption('--with-boost',
+#          dest='with-boost',
+#          type='string',
+#          nargs=1,
+#          action='store',
+#          metavar='DIR',
+#          help='path to boost installation')
           
-AddOption('--with-cxx',
-          dest='with-cxx',
-          type='string',
-          nargs=1,
-          action='store',
-          metavar='COMMAND',
-          help='program used to invoke the C++ compiler')
+vars = Variables()
+vars.Add(PackageVariable('boost', 'boost installation directory (should contain boost/ and lib/)', 'yes'))
+vars.Add('compiler', 'compiler command to use', 'g++')
 
-env = Environment(BOOST_PATH = GetOption('with-boost'), CXX_COMMAND = GetOption('with-cxx'))
+env = Environment(variables = vars)
+
+
+if env['boost'] == True:
+  dir = '/usr/local/include'
+  env['boost'] = dir
+  
+if env['boost']:
+  env.Append(CPPPATH='$boost/include')
+  env.Append(LIBPATH='$boost/lib')
+
+env.Replace(CXX = '$compiler')
+
+Help(vars.GenerateHelpText(env))
+
+#if GetOption('with-boost') != "":
+#  env.Append(BOOST_PATH = GetOption('with-boost'))
 
 target = 'bawt'
-buildDirectory = 'build'
+buildDirectory = '.build'
 SConscript('src/SConscript', exports='env target', variant_dir = buildDirectory , duplicate = 0 )
 
 Clean('.', Glob("*~") + Glob('*/*~') + [ buildDirectory ] )

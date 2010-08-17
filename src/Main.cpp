@@ -2,6 +2,7 @@
 #include <fstream>
 #include <istream>
 #include <ostream>
+#include <sstream>
 #include <iterator>
 
 #include <string>
@@ -11,25 +12,28 @@
 #include <boost/bind.hpp>
 #include <boost/program_options.hpp>
 
-//#include <boost/regex.hpp>
-#include "irc_client.hpp"
-#include "config.hpp"
+#include "Main.hpp"
+#include "IRCBot.hpp"
+//~ #include "irc_client.hpp"
+//~ #include "config.hpp"
+
+namespace po = boost::program_options;
 
 template<class T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
-{
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
     std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, " "));
     return os;
 }
 
+std::string GetVersion(void) {
+  std::ostringstream oss;
+  oss << "IRCBawt v" << VERSION;
+  return oss.str();
+}
 
-namespace po = boost::program_options;
+int main(int argc, char *argv[]) {
 
-int main(int argc, char *argv[])
-{
-
-  try
-  {
+  try {
     std::string config_file;
     po::options_description optslist("options");
     optslist.add_options()
@@ -40,16 +44,21 @@ int main(int argc, char *argv[])
 
     po::variables_map opts;
     store(po::command_line_parser(argc, argv).options(optslist).run(), opts);
+    notify(opts);
 
     if(opts.count("help")) {
-      std::cout << visible << std::endl;
+      std::cout << optslist << std::endl;
       return 0;
     }
 
     if(opts.count("version")) {
-      stdd::cout << "Insert version here" << std::endl;
+      std::cout << GetVersion() << std::endl;
       return 0;
     }
+    
+    std::string ConfigFile(opts["config"].as<std::string>());
+    IRCBot b;
+    b.ParseConfig(ConfigFile);
     
     po::options_description config("configuration");    
     config.add_options()
@@ -64,7 +73,7 @@ int main(int argc, char *argv[])
 
     std::ifstream ifs(config_file.c_str());
     if(!ifs) {
-      std::cout << "cannot open config file: " << config_file << std::endl;
+      std::cout << "cannot open config file: " << opts["config"].as<std::string>() << std::endl;
       return 1;
     } else {
       store(parse_config_file(ifs, config), bot_config);
