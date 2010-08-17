@@ -1,6 +1,8 @@
 #ifndef IRCBOT_HH
 #define IRCBOT_HH
 
+#include "Server.hpp"
+
 #include <vector>
 #include <string>
 #include <map>
@@ -10,9 +12,10 @@ class IRCBot {
   public:
     IRCBot() {}
     bool ParseConfig(std::string &ConfigFile);
+    bool Run(void);
   private:
   
-    std::string m_Server, m_Port, m_Pass;
+    Server m_Server;
     
     std::set<std::string> m_Options;
     std::map<std::string, std::string> m_Parameters;

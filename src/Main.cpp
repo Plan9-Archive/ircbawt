@@ -1,3 +1,8 @@
+
+#include "Main.hpp"
+#include "IRCBot.hpp"
+#include "Util.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <istream>
@@ -12,18 +17,10 @@
 #include <boost/bind.hpp>
 #include <boost/program_options.hpp>
 
-#include "Main.hpp"
-#include "IRCBot.hpp"
 //~ #include "irc_client.hpp"
 //~ #include "config.hpp"
 
 namespace po = boost::program_options;
-
-template<class T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
-    std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, " "));
-    return os;
-}
 
 std::string GetVersion(void) {
   std::ostringstream oss;
@@ -59,7 +56,7 @@ int main(int argc, char *argv[]) {
     std::string ConfigFile(opts["config"].as<std::string>());
     IRCBot b;
     b.ParseConfig(ConfigFile);
-    
+/*
     po::options_description config("configuration");    
     config.add_options()
       ("server", po::value<std::string>(), "irc server")
@@ -79,6 +76,7 @@ int main(int argc, char *argv[]) {
       store(parse_config_file(ifs, config), bot_config);
       notify(bot_config);
     }
+    */
 
     //~ boost::asio::io_service io_service;
     //~ boost::asio::ip::tcp::resolver resolver(io_service);
